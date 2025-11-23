@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Menu List</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div th:replace="/nav_admin :: sub-nav"></div>
+
+<div class="container">
+    <h1>Menu List</h1>
+
+    <div th:if="${#lists.isEmpty(menuItems)}" style="color: red; margin-bottom: 10px;">
+        No menu items found.
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Category</th>
+            <th>Available</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="menuItem : ${menuItems}">
+            <td th:text="${menuItem.id}"></td>
+            <td th:text="${menuItem.name}"></td>
+            <td th:text="${menuItem.price}"></td>
+            <td th:text="${menuItem.category}"></td>
+            <td th:text="${menuItem.available}"></td>
+            <td>
+
+                <form th:action="@{/admin/menu/edit/{id}(id=${menuItem.id})}" method="get" style="display:inline;">
+                    <button type="submit" style="margin-right: 10px;">Edit</button>
+                </form>
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

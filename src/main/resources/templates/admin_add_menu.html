@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Menu Management</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div th:replace="/nav_admin :: sub-nav"></div>
+
+<div class="form-container">
+    <h1>Add Menu Item</h1>
+    <form method="post" th:action="@{/admin/menu/update}" th:object="${menuItem}" enctype="multipart/form-data">
+        <label>Name: <input type="text" th:field="*{name}" required/></label>
+        <label>Price: <input type="number" step="0.01" th:field="*{price}" required/></label>
+        <label>Description: <input type="text" th:field="*{description}"/></label>
+        <label>Category: <input type="text" th:field="*{category}"/></label>
+        <label>Available: <input type="checkbox" th:field="*{available}" checked/></label>
+        <label>Image: <input type="file" name="imageFile" accept="image/*" required></label>
+
+        <button type="submit">Add Item</button>
+        <button type="button" onclick="window.location.href='/admin/dashboard'" class="cancel-btn">Cancel</button>
+    </form>
+</div>
+</body>
+</html>

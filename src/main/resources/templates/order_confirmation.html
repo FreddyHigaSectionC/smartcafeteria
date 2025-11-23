@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Order Confirmation</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div th:replace="/nav :: main-nav"></div>
+
+<div class="form-confirmation">
+    <h1>Order Details:</h1>
+
+    <p><strong>Order ID:</strong> <span th:text="${order.id}"></span></p>
+    <p><strong>Status:</strong> <span th:text="${order.status}"></span></p>
+    <p><strong>Order Time:</strong> <span th:text="${#temporals.format(order.orderTime, 'yyyy-MM-dd HH:mm:ss')}"></span></p>
+
+    <h4 style="margin-bottom: 0;">Items:</h4>
+    <table>
+        <thead>
+        <tr>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${order.orderItems}">
+            <td th:text="${item.menuItem.name}"></td>
+            <td th:text="${item.quantity}"></td>
+            <td>$<span th:text="${item.price}"></span></td>
+            <td>$<span th:text="${#numbers.formatDecimal(item.total, 1, 'POINT', 2, 'POINT')}"></span></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <p><strong>Order Total:</strong> $<span th:text="${#numbers.formatDecimal(order.total, 1, 'POINT', 2, 'POINT')}"></span></p>
+    <button type="button" onclick="window.location.href='/menu'" class="cancel-btn">Back to menu</button>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div th:replace="/nav :: main-nav"></div>
+
+    <div class="form-order-container">
+    <h1>Order: <span th:text="${menuItem.name}"></span></h1>
+        <form th:action="@{/orders/add_to_cart}" method="post">
+            <input type="hidden" name="menuItemId" th:value="${menuItem.id}"/>
+            <label>Quantity: <input type="number" name="quantity" value="1" min="1"/></label>
+            <button type="submit" style="margin-top: 20px">Add to cart</button>
+            <button type="button" onclick="window.location.href='/menu'" class="cancel-btn">Cancel</button>
+        </form>
+    </div>
+</body>
+
+</html>

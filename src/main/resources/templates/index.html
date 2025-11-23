@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<header>
+    <h1>Smart Cafeteria</h1>
+    <div>
+        <button type="button" th:onclick="|location.href='@{/login}'|" class="signin-btn">Sign In</button>
+        <button type="button" th:onclick="|location.href='@{/register}'|" class="signup-btn">Sign Up</button>
+    </div>
+</header>
+
+<div class="hero"></div>
+<div class="hero-text">
+    <h2 class="text-intro">Order Smart. Eat Fast.</h2>
+    <p>Smart Cafeteria lets students browse the menu, choose their favorite meals, and order them easily for quick pickup.</p>
+</div>
+</body>
+</html>

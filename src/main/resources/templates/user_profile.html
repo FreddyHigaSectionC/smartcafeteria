@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<div th:replace="/nav :: main-nav"></div>
+
+<div class="form-container">
+    <h1>User Profile</h1>
+
+    <form method="post" th:action="@{/users/update/{id}(id=${user.id})}" th:object="${user}">
+        <label>First name: <input type="text" th:field="*{first_name}"/></label>
+        <label>Last name: <input type="text" th:field="*{last_name}"/></label>
+        <label>Password: <input type="password" th:field="*{password}" placeholder="Type new password"/></label>
+        <label>Email: <input type="text" th:field="*{email}"/></label>
+        <button type="submit">Save Changes</button>
+        <button type="button"  class="danger-btn" onclick="deactivateAccount()">Deactivate Account</button>
+        <button type="button" onclick="window.location.href='/menu'" class="cancel-btn">Cancel</button>
+    </form>
+
+</div>
+</body>
+</html>

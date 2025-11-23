@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div th:replace="/nav_admin :: sub-nav"></div>
+
+<div class="container">
+    <h1>All Orders</h1>
+
+    <div th:if="${emptyMessage != null}" style="color: red; margin-bottom: 10px;">
+        <span th:text="${emptyMessage}"></span>
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>User</th>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Order Time</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <th:block th:each="order : ${orders}">
+
+            <tr>
+                <td th:text="${order.id}" style="background-color: #FFD699"></td>
+                <td th:text="${order.user.first_name + ' ' + order.user.last_name}" style="background-color: #FFD699"></td>
+
+                <!-- Item column empty -->
+                <td style="background-color: #FFD699"></td>
+
+                <!-- Quantity column empty -->
+                <td style="background-color: #FFD699"></td>
+
+                <!-- TOTAL column correct position -->
+                <td style="background-color: #FFD699">
+                    <strong><span th:text="${#numbers.formatDecimal(order.total, 1, 'POINT', 2, 'POINT')}"></span></strong>
+                </td>
+
+                <!-- Status column empty -->
+                <td style="background-color: #FFD699"></td>
+
+                <!-- Order time empty -->
+                <td style="background-color: #FFD699"></td>
+
+                <!-- Action column -->
+                <td style="background-color: #FFD699">
+                    <form th:if="${order.status == 'PENDING'}"
+                          th:action="@{/admin/orders/complete/{id}(id=${order.id})}" method="post">
+                        <button type="submit">Complete</button>
+                    </form>
+                    <span th:if="${order.status != 'PENDING'}">No action available</span>
+                </td>
+            </tr>
+
+            <!-- Rows for each item -->
+            <tr th:each="item : ${order.orderItems}" th:if="${!#lists.isEmpty(order.orderItems)}">
+                <td></td>
+                <td></td>
+                <td th:text="${item.menuItem?.name}"></td>
+                <td th:text="${item.quantity}"></td>
+                <td th:text="${#numbers.formatDecimal(item.total, 1, 'POINT', 2, 'POINT')}"></td>
+                <td th:text="${order.status}"
+                    th:class="${order.status == 'PENDING' ? 'pending' :
+                              order.status == 'COMPLETED' ? 'completed' : 'cancelled'}">
+                </td>
+                <td th:text="${#temporals.format(order.orderTime, 'yyyy-MM-dd HH:mm')}"></td>
+                <td></td>
+            </tr>
+
+            <!-- If no items -->
+            <tr th:if="${#lists.isEmpty(order.orderItems)}">
+                <td th:text="${order.id}"></td>
+                <td th:text="${order.user.first_name + ' ' + order.user.last_name}"></td>
+                <td colspan="3">No items in this order</td>
+                <td th:text="${order.status}" th:classappend="${order.status.toLowerCase()}"></td>
+                <td th:text="${#temporals.format(order.orderTime, 'yyyy-MM-dd HH:mm')}"></td>
+                <td>
+                    <form th:if="${order.status == 'PENDING'}"
+                          th:action="@{/admin/orders/complete/{id}(id=${order.id})}" method="post">
+                        <button type="submit">Complete</button>
+                    </form>
+                    <span th:if="${order.status != 'PENDING'}">No action available</span>
+                </td>
+            </tr>
+        </th:block>
+        </tbody>
+
+    </table>
+</div>
+</body>
+</html>

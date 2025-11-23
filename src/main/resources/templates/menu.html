@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Menu Items</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<div th:replace="/nav :: main-nav"></div>
+
+<div class="container">
+    <h1>Menu Items</h1>
+    <div class="menu-bar">
+        <button class="menu-btn active" onclick="showMenu('All', this)">All</button>
+        <button class="menu-btn" onclick="showMenu('Sandwich', this)">Sandwich</button>
+        <button class="menu-btn" onclick="showMenu('Salad', this)">Salad</button>
+        <button class="menu-btn" onclick="showMenu('Pizza', this)">Pizza</button>
+        <button class="menu-btn" onclick="showMenu('Taco', this)">Taco</button>
+        <button class="menu-btn" onclick="showMenu('Pasta', this)">Pasta</button>
+    </div>
+
+    <div class="card-container">
+        <div class="card" th:each="item : ${menuItems}" th:if="${item.available}" th:data-category="${item.category}">
+            <!-- Image from database -->
+            <img th:src="@{${item.imagePath}}" th:alt="${item.name}" class="menu-image"/>
+
+            <!-- Item details -->
+            <h3 th:text="${item.name}"></h3>
+            <p><strong>Price:</strong> $<span th:text="${item.price}"></span></p>
+            <p th:text="${item.description}"></p>
+            <p><em th:text="${item.category}"></em></p>
+
+            <!-- Order button -->
+            <form th:action="@{/orders/create/{id}(id=${item.id})}" method="get">
+                <button type="submit">Order</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+
+</html>

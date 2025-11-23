@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Nav Admin</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<nav class="navbar" th:fragment="sub-nav">
+    <div class="nav-left">
+        <a th:href="@{/admin/dashboard}" class="nav-item">Dashboard</a>
+        <a th:href="@{/admin/menu}" class="nav-item">Menu List</a>
+        <a th:href="@{/admin/menu/add}" class="nav-item">Menu Management</a>
+        <a th:href="@{/admin/users}" class="nav-item">User Management</a>
+    </div>
+
+    <div class="nav-right">
+        <span style="color: white"><strong>Welcome, </strong><span th:text="${username}" class="username">User</span></span>
+        <a th:href="@{/logout}" class="nav-item">Logout</a>
+    </div>
+</nav>
+
+</body>
+</html>

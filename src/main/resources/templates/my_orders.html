@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>My Orders</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<div th:replace="/nav :: main-nav"></div>
+
+<div class="container">
+    <h1>My Orders</h1>
+
+    <div th:if="${message}">
+        <p th:text="${message}"></p>
+    </div>
+
+    <p th:if="${successMessage}" th:text="${successMessage}" class="success-message"></p>
+    <p th:if="${errorMessage}" th:text="${errorMessage}" class="error-message"></p>
+
+    <div class="orders-grid">
+        <div class="order-card" th:each="order : ${orders}">
+
+            <h2>Order #<span th:text="${order.id}"></span></h2>
+
+            <!-- Show message if no items in the order -->
+            <div th:if="${#lists.isEmpty(order.orderItems)}">
+                <p>No items in this order.</p>
+            </div>
+
+            <!-- Loop through items safely -->
+            <div th:each="item : ${order.orderItems}">
+                <p><strong>Item:</strong> <span th:text="${item.menuItem?.name}"></span></p>
+                <p><strong>Quantity:</strong> <span th:text="${item.quantity}"></span></p>
+                <p><strong>Price per Item:</strong> $<span th:text="${item.price}"></span></p>
+                <p><strong>Total:</strong> $<span th:text="${#numbers.formatDecimal(item.total, 1, 'POINT', 2, 'POINT')}"></span></p>
+                <hr/>
+            </div>
+
+            <p><strong>Order Total:</strong> $<span th:text="${#numbers.formatDecimal(order.total, 1, 'POINT', 2, 'POINT')}"></span></p>
+
+            <p>
+                <strong>Status:</strong>
+                <span th:text="${order.status}" th:classappend="${order.status.toLowerCase()}"></span>
+            </p>
+
+            <p><strong>Order Time:</strong>
+                <span th:text="${#temporals.format(order.orderTime, 'yyyy-MM-dd HH:mm')}"></span>
+            </p>
+
+            <div class="actions">
+                <form th:if="${order.status == 'PENDING'}"
+                      th:action="@{/orders/cancel/{id}(id=${order.id})}" method="post">
+                    <button type="submit" class="cancel-btn">Cancel</button>
+                </form>
+
+                <span th:if="${order.status != 'PENDING'}">No action available</span>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

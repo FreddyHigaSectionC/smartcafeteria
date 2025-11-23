@@ -1,0 +1,18 @@
+package com.example.smartcafeteria.config;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+// Expose files stored on disk under the uploads/ folder to be accessible through web URLs.
+@Configuration
+public class WebConfig implements WebMvcConfigurer {
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+
+        // Maps URL path /uploads/** to the local filesystem folder "uploads/"
+        registry.addResourceHandler("/uploads/**")
+                .addResourceLocations("file:uploads/");
+    }
+}

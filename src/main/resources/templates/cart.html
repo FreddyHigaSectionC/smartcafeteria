@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Shopping Cart</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div th:replace="~{/nav :: main-nav}"></div>
+
+<div class="container">
+    <h1>Your Cart</h1>
+
+    <div th:if="${#lists.isEmpty(cartItems)}">
+        <p>Your cart is empty.</p>
+        <a href="/menu">Back to Menu</a>
+    </div>
+
+    <div th:if="${!#lists.isEmpty(cartItems)}">
+        <table class="cart-table">
+            <thead>
+            <tr>
+                <th>Item</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${cartItems}">
+                <td th:text="${item.menuItem.name}"></td>
+                <td>$<span th:text="${item.price}"></span></td>
+                <td th:text="${item.quantity}"></td>
+                <td>$<span th:text="${#numbers.formatDecimal(item.total, 1, 'POINT', 2, 'POINT')}"></span></td>
+                <td>
+                    <form th:action="@{/cart/remove/{itemId}(itemId=${item.id})}" method="post">
+                        <button type="submit">Remove</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="3"><strong>Order Total:</strong></td>
+                <td colspan="2">$<span th:text="${#numbers.formatDecimal(total, 1, 'POINT', 2, 'POINT')}"></span></td>
+            </tr>
+            </tfoot>
+        </table>
+
+        <div class="cart-actions">
+            <form th:action="@{/cart/checkout}" method="post">
+                <button type="submit">Checkout</button>
+            </form>
+            <button onclick="window.location.href='/menu'">Continue Shopping</button>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
