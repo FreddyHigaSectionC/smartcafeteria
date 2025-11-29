@@ -30,13 +30,20 @@
             </div>
 
             <!-- Loop through items safely -->
-            <div th:each="item : ${order.orderItems}">
-                <p><strong>Item:</strong> <span th:text="${item.menuItem?.name}"></span></p>
-                <p><strong>Quantity:</strong> <span th:text="${item.quantity}"></span></p>
-                <p><strong>Price per Item:</strong> $<span th:text="${item.price}"></span></p>
-                <p><strong>Total:</strong> $<span th:text="${#numbers.formatDecimal(item.total, 1, 'POINT', 2, 'POINT')}"></span></p>
-                <hr/>
+            <div th:each="item : ${order.orderItems}" class="order-item-row">
+                <div class="order-item-info">
+                    <p><strong>Item:</strong> <span th:text="${item.menuItem?.name}"></span></p>
+                    <p><strong>Quantity:</strong> <span th:text="${item.quantity}"></span></p>
+                    <p><strong>Price per Item:</strong> $<span th:text="${item.price}"></span></p>
+                    <p><strong>Total:</strong> $<span th:text="${#numbers.formatDecimal(item.total, 1, 'POINT', 2, 'POINT')}"></span></p>
+                </div>
+
+                <div th:if="${item.menuItem?.imagePath}" class="order-item-image-wrapper">
+                    <img th:src="${item.menuItem.imagePath}" alt="Menu Item Image" class="order-item-image"/>
+                </div>
             </div>
+
+            <hr style="width: 100%"/>
 
             <p><strong>Order Total:</strong> $<span th:text="${#numbers.formatDecimal(order.total, 1, 'POINT', 2, 'POINT')}"></span></p>
 
