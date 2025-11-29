@@ -32,10 +32,10 @@ public class AuthController {
         return "index";
     }
     // home page for authenticated users
-    // retrieves user info using the logged0in principal
+    // retrieves user info using the logged-in principal
     @GetMapping("/home")
     public String homePage(Model model, Principal principal) {
-        //fetch user data based on logged in username
+        //fetch user data based on logged-in username
         User user = userService.getUserByUsername(principal.getName())
                 .orElseThrow(() -> new RuntimeException("User not found"));
         // add user indo to model for the home.html 
