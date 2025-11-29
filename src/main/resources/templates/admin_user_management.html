@@ -18,6 +18,7 @@
         <th>Username</th>
         <th>Email</th>
         <th>Role</th>
+        <th>Active</th>
         <th>Action</th>
     </tr>
     </thead>
@@ -28,6 +29,7 @@
         <td th:text="${user.username}"></td>
         <td th:text="${user.email}"></td>
         <td th:text="${user.role}"></td>
+        <td th:text="${user.active}"></td>
         <td>
             <form th:action="@{/admin/users/edit/{id}(id=${user.id})}" method="get">
                 <button type="submit">Edit</button>
