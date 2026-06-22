@@ -28,38 +28,47 @@ public class SecurityConfig {
         this.passwordEncoder = passwordEncoder;
         this.customLoginSuccessHandler = customLoginSuccessHandler;
     }
-
+    // main spring security filter chain config
+    // defines access rules, login, logout, and exception handling
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                // disble CSRF for simplicity - not recommended for production
                 .csrf(csrf -> csrf.disable())
+                // authZ rules, who can access what
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/register", "/style.css").permitAll()
-                        .requestMatchers("/menu/add", "/menu/edit/**", "/menu/delete/**").hasRole("ADMIN")
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .anyRequest().authenticated()
+                        .requestMatchers("/", "/register", "/style.css").permitAll() // public pages
+                        .requestMatchers("/menu/add", "/menu/edit/**", "/menu/delete/**").hasRole("ADMIN") // admin only
+                        .requestMatchers("/admin/**").hasRole("ADMIN") // admin dashboard
+                        .anyRequest().authenticated() // everything else requires login
                 )
+                // form login config
                 .formLogin(form -> form
                         .loginPage("/login")
                         .successHandler(customLoginSuccessHandler)
                         .permitAll()
                 )
+                // unauthorized access handler
                 .exceptionHandling(handling -> handling
                         .accessDeniedPage("/errorpage")
                 )
+                // logout config
                 .logout(logout -> logout.permitAll());
 
         return http.build();
     }
 
+    // authN provider using DAO-based authN
+    // tells spring security how to load users and how passwords are encoded
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(userDetailsService);
-        provider.setPasswordEncoder(passwordEncoder);
+        provider.setUserDetailsService(userDetailsService); // load users from DB
+        provider.setPasswordEncoder(passwordEncoder); // use encoded password
         return provider;
     }
 
+    // exposes AuthenticationManager as a bean so it can be used elsewhere in the app
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
