@@ -33,6 +33,7 @@ public class AuthController {
 
     @GetMapping("/home")
     public String homePage(Model model, Principal principal) {
+<<<<<<< Updated upstream
         if (principal == null) {
             return "redirect:/login";
         }
@@ -48,11 +49,23 @@ public class AuthController {
         }
 
         model.addAttribute("username", username);
+=======
+        //fetch user data based on logged-in username
+        User user = userService.getUserByUsername(principal.getName())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        // add user indo to model for the home.html
+        model.addAttribute("username", principal.getName());
+>>>>>>> Stashed changes
         model.addAttribute("userId", user.getId());
 
         return "home";
     }
 
+<<<<<<< Updated upstream
+=======
+    // login page
+    // displays error or logout messages when appropriate
+>>>>>>> Stashed changes
     @GetMapping("/login")
     public String login(@RequestParam(value = "error", required = false) String error,
                         @RequestParam(value = "logout", required = false) String logout,
