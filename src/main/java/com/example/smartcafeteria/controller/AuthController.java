@@ -31,25 +31,21 @@ public class AuthController {
     public String index() {
         return "index";
     }
-  
     // home page for authenticated users
     // retrieves user info using the logged-in principal
     @GetMapping("/home")
     public String homePage(Model model, Principal principal) {
-
-        model.addAttribute("username", username);
         //fetch user data based on logged-in username
         User user = userService.getUserByUsername(principal.getName())
                 .orElseThrow(() -> new RuntimeException("User not found"));
         // add user indo to model for the home.html
         model.addAttribute("username", principal.getName());
-
         model.addAttribute("userId", user.getId());
 
         return "home";
     }
 
-    // login page 
+    // login page
     // displays error or logout messages when appropriate
     @GetMapping("/login")
     public String login(@RequestParam(value = "error", required = false) String error,
