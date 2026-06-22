@@ -11,6 +11,7 @@ Spring Boot web application for a cafeteria/menu ordering project.
 **Customer Features:**
 - **Browse Menu** — View available menu items with descriptions and pricing.
 - **Shopping Cart** — Add/remove items from cart, adjust quantities before checkout.
+  ![Shopping Cart](images/cart.png)
 - **Place Orders** — Complete order submission with order confirmation page.
 - **Order History** — View past orders and their status in "My Orders".
 - **User Profile** — Manage account information and view profile details.
