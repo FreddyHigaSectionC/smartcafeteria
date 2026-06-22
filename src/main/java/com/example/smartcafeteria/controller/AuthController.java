@@ -33,11 +33,21 @@ public class AuthController {
 
     @GetMapping("/home")
     public String homePage(Model model, Principal principal) {
+        if (principal == null) {
+            return "redirect:/login";
+        }
 
-        User user = userService.getUserByUsername(principal.getName())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        String username = principal.getName();
 
-        model.addAttribute("username", principal.getName());
+        //fetch user data based on logged-in username
+        User user = userService.findByUsername(username)
+                .orElse(null);
+
+        if (user == null) {
+            return "redirect:/login";
+        }
+
+        model.addAttribute("username", username);
         model.addAttribute("userId", user.getId());
 
         return "home";
